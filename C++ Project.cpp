@@ -1,0 +1,684 @@
+// 										C++ 1st Semester Final Project
+// 									Done by Muhammad Umar and Mehtab Ahmed
+
+
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+using namespace std;
+	
+	int tossWin, decision, team1size, team2size , check2;
+	int overs1, wickets1, score1, p_balls1,  bat_first, overs , balls, target, wickets, score, p_balls;
+	float run_rate, run_rate1, c_overs, c_overs1;
+	string  name,winner,innings, input, team1Name , team2Name;			
+		
+	void Team1 ();
+	void Team2 ();	
+	void toss();
+	void first_inning();
+	void second_inning();
+	void matchSummary();
+						
+int main() {
+		
+		cout<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;		
+		cout<<setw(40)<<"CRICKET SCOREBOARD CARD"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		
+	do {		
+	    string choice; 
+	    cout << "1. New Match.\n2. Match Summary.\n3. Exit." << endl << endl;
+		cout<<"-------------------------------------------------------------"<<endl;	
+	    cout << "Enter Your Choice: ";
+	    cin >> choice;
+	    cout<<"-------------------------------------------------------------"<<endl;
+	
+	    bool isValidChoice = true;
+	    if (choice.length() != 1 || (choice[0] < '1' || choice[0] > '3')) {
+	        isValidChoice = false;
+	    }
+	
+	    if (!isValidChoice) {
+	        cout << endl;	
+	        cout<<"-------------------------------------------------------------"<<endl;
+	        cout << "INVALID INPUT! Please Enter Valid Number (1,2 OR 3)" << endl;
+	        cout<<"-------------------------------------------------------------"<<endl<<endl;
+	        continue; 
+	    }
+			
+	    switch (choice[0]) {
+	        case '1': {
+	            system("cls");  
+	            cout << "-----------------------------------------------------------------------" << endl;
+	            cout << setw(45) << " TEAM INFORMATION " << endl;
+	            cout << "-----------------------------------------------------------------------" << endl;
+				cout<<endl;			
+	            Team1();
+	            Team2();
+	
+	            cout << setw(40) << " OVER " << endl;
+	            cout << "-----------------------------------------------------------------------" << endl;
+	
+	            string oversInput; 	
+	            while (true) {
+	                cout << "Enter Number of Overs: ";
+	                cin >> oversInput;
+	                cout << "-----------------------------------------------------------------------" << endl;
+	
+	                bool isNumeric = true;
+	                for (int i = 0; i < oversInput.length(); i++) {
+	                    if (!isdigit(oversInput[i])) {
+	                        isNumeric = false;
+	                        break;
+	                    }
+	                }
+	
+	                if (!isNumeric) {
+	                	cout << "-----------------------------------------------------------------------" << endl;
+	                    cout << "INVALID INPUT! Please Enter Valid Number" << endl;
+	                    continue;
+	                }
+	
+	                overs = 0;  
+	                for (int i = 0; i < oversInput.length(); i++) {
+	                    overs = overs * 10 + (oversInput[i] - '0');
+	                }
+	
+	                if (overs <= 0) {
+	                    cout << "Number of Overs Can Not be 0 OR Negative! TRY AGAIN " << endl;
+	                } else {
+	                    break;  
+	                }
+	            }
+	
+	            system("cls");	
+	            toss();		
+	            first_inning();
+	            second_inning();
+	            break;
+	        }
+				
+	        case '2': {
+	            cout << setw(45) << "Want to See the Match Summary?" << endl;
+	            cout << "-------------------------------------------------------------" << endl;
+	            cout << "Press Enter to See Match Summary..." << endl;
+	            string input;  
+	            cin.ignore();  
+	            getline(cin, input);
+	            system("cls");
+	           	matchSummary();
+	            break;
+	        }
+				
+	        case '3': {
+	            cout << "Exiting Program. Goodbye!" << endl;
+	            exit(0); 
+	        }		
+	    } 
+	    
+	} while (true); 
+	
+	
+		return 0;
+	}
+						
+void Team1() {
+    string size;   
+    int a = 0;   
+    
+    cout << "Enter Name of Team 1: ";
+    cin.ignore();  
+    getline(cin, team1Name);  
+    
+    bool isValid = false;
+    while (!isValid) {
+        cout << "Enter Size of Team : ";
+        cin >> size;
+		cout << "-----------------------------------------------------------------------" << endl;  
+
+        bool allDigits = true;
+        for (int i = 0; i < size.length(); i++) {
+            if (!isdigit(size[i])) {
+                allDigits = false; 
+                break;
+            }
+        }
+
+        if (allDigits) {
+            a = 0;
+            for (int i = 0; i < size.length(); i++) {
+                a = a * 10 + (size[i] - '0'); 
+            }
+
+            if (a >= 2 && a <= 11) {
+                team1size = a;  		 
+                isValid = true;  
+            } else {
+                cout << "Please Enter Number Between 2 and 11." << endl;
+            }
+        } else {
+            cout << "INVALID INPUT. Please Enter Valid Number." << endl;
+        }
+    }
+}
+
+void Team2() {
+    string size;   
+    int a = 0;     
+   	
+			
+    cout << "Enter Name of Team 2: ";
+    cin.ignore();  
+    getline(cin, team2Name);  
+
+	bool isValid = false;
+    while (!isValid) {
+        cout << "Enter Size of Team: ";
+        cin >> size;
+        cout << "-----------------------------------------------------------------------" << endl;
+
+        bool allDigits = true;
+        for (int i = 0; i < size.length(); i++) {
+            if (!isdigit(size[i])) {
+                allDigits = false;
+                break;
+            }
+        }
+
+        if (allDigits) {
+            a = 0; 
+            for (int i = 0; i < size.length(); i++) {
+                a = a * 10 + (size[i] - '0');
+            }
+
+            if (a >= 2 && a <= 11) {
+                if (a == team1size) {  
+                    team2size = a; 
+                    isValid = true; 
+                } else {
+                    cout << "Error! Team 2 must have the Same Number of Players as Team 1 (" << team1size << ")" << endl;
+                }
+            } else {
+                cout << "Please Enter Number Between 2 and 11 " << endl;
+            }
+        } else {
+        	cout << "-----------------------------------------------------------------------" << endl;
+            cout << "INVALID INPUT! Please Enter Valid Number " << endl;
+        }
+    }
+}
+
+void toss() {
+	
+    cout << endl;
+    cout << "------------------------------------------------------------------------" << endl;
+    cout << setw(50) << " Now Ready for the Toss " << endl;
+    cout << "------------------------------------------------------------------------" << endl;
+    cout<<endl;
+    
+    string input;
+    while (true) {
+        cout << "Who is Batting First ?" << endl;
+        cout << "Enter 1 for " << team1Name << " OR 2 for " << team2Name << " : ";
+        cin >> input ;
+
+        if (input.length() == 1 && input[0] >= '1' && input[0] <= '2') {
+            tossWin = input[0] - '0';
+            break; 
+        } else {
+        	cout<<endl;
+            cout << "INVALID INPUT! Please Enter 1 for " << team1Name << " or 2 for " << team2Name << "." << endl<<endl;
+        }
+    }
+
+    if (tossWin == 1) { 
+        cout << "------------------------------------------------------------------------" << endl;
+        cout << team1Name << " WON the TOSS and ELECTED to BAT First!" << endl;
+        cout << "------------------------------------------------------------------------" << endl;
+        cout << "Press Enter to Move Next. " << endl;
+        cin.ignore();  
+        getline(cin, input); 
+          
+    } else if (tossWin == 2 ) {
+        cout << "---------------------------------------------------------------------------" << endl;
+        cout << team2Name << " WON the TOSS and ELECTED to BAT First!" << endl;
+        cout << "---------------------------------------------------------------------------" << endl;
+        cout << "Press Enter to Move Next.. " << endl;
+        cin.ignore();  
+        getline(cin, input); 
+        
+    }
+}
+
+void first_inning() {
+	
+    ofstream htmlFile("Match_Summary.html");     
+    if (!htmlFile) {
+        cout << "Error Opening Files" << endl;
+    }
+    
+    balls = overs* 6;
+    p_balls = 0;
+    score = 0;
+    wickets = 0;
+    c_overs1 = 0.0; 
+   
+    for (int j = 0; j != balls; j++) {
+        system("cls");
+        cout << "-----------------------------------------------------------------------------" << endl;
+        cout << setw(45) << "FIRST_INNING" << endl;
+        cout << "-----------------------------------------------------------------------------" << endl;
+        cout << "Score: " << score << "\t\tOvers: " << c_overs1 << "\t\tWickets: " << wickets << "\tRunRate: " << run_rate << endl;
+        cout << "-----------------------------------------------------------------------------" << endl;
+		
+		
+		htmlFile.open("Match_Summary.html");
+        htmlFile << "<html>\n";
+        htmlFile << "<html>\n<head>\n";
+        htmlFile << "<title>Match Summary</title>\n";
+        htmlFile << "<style>\n";
+        htmlFile << "body { font-family: Arial, sans-serif; background-color: #f4f4f9; text-align: center; }\n";
+        htmlFile << "h1 { color: #333; }\n";
+        htmlFile << "table { margin: auto; border-collapse: collapse; width: 60%; }\n";
+        htmlFile << "th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }\n";
+        htmlFile << "th { background-color: #4CAF50; color: white; }\n";
+        htmlFile << "</style>\n</head>\n<body>\n";
+        htmlFile << "<h1>First Inning Live Updates</h1>\n";
+        htmlFile << "<table>\n";
+        htmlFile << "<tr><th>Score</th><th>Overs</th><th>Wickets</th><th>Run Rate</th></tr>\n";
+        htmlFile << "<tr>";
+        htmlFile << "<td>" << score << "</td>";
+        htmlFile << "<td>" << fixed << setprecision(1) << c_overs1 << "</td>";
+        htmlFile << "<td>" << wickets << "</td>";
+        htmlFile << "<td>" << fixed << setprecision(2) << run_rate << "</td>";
+        htmlFile << "</tr>\n";
+        htmlFile << "</table>\n";
+        htmlFile << "</body>\n</html>";
+        htmlFile.close();
+		
+		
+        int scorer = 0;
+        while (true) {
+            string input;
+            cout<<endl;
+            cout << "Last Ball: " << endl;
+            cout << "1..) Normal Delivery!" << endl;
+            cout << "2..) No ball/Wide!" << endl <<endl;
+            cout << "-----------------------------------------------------------------------------" << endl;
+            cout << "Please Choose 1 or 2: ";
+            cin >> input;
+            cout << "-----------------------------------------------------------------------------" << endl;
+            cin.ignore();
+
+            if (input.length() == 1 && isdigit(input[0])) {
+                scorer = input[0] - '0'; 
+                if (scorer == 1 || scorer == 2) {
+                    break;
+                }
+            }
+            cout << "Invalid Input! Please Enter 1 or 2." << endl;
+            cout << "-----------------------------------------------------------------------------" << endl;
+        }
+
+        bool isNoBall = false;
+        bool isWideBall = false;
+        if (scorer == 2) {
+            string extraRunType;
+            bool validInput = false;
+
+            while (!validInput) {
+                cout << "Enter W for Wide or N for No-ball: ";
+                cin >> extraRunType;
+                cout << "-----------------------------------------------------------------------------" << endl;
+
+                if (extraRunType.length() == 1) {
+                    char inputChar = tolower(extraRunType[0]);
+                    if (inputChar == 'w') {
+                        isWideBall = true;
+                        score += 1;
+                        validInput = true;
+                    } else if (inputChar == 'n') {
+                        isNoBall = true;
+                        score += 1; 
+                        validInput = true;
+                    } else {
+                        cout << "Invalid Input! Please ENTER (W or N) "<<endl;
+                    }
+                } else {
+                   cout << "Invalid Input! Please Enter a Single Character (W or N)." << endl;
+                   
+                }
+            }
+        }
+
+        int r = 0;
+        while (true) {
+            string input;
+            cout<<endl;
+            cout << "Enter 0 for: DOT" << endl;
+            cout << "Enter 1 for: SINGLE" << endl;
+            cout << "Enter 2 for: DOUBLE" << endl;
+            cout << "Enter 3 for: TRIPLE" << endl;
+            cout << "Enter 4 for: FOUR" << endl;
+            cout << "Enter 5 for: SIX" << endl;
+            cout << "Enter 6 for: WICKET" << endl<<endl;
+            cout << "-----------------------------------------------------------------------------" << endl;
+            cout << "Enter Run(s) for this ball: ";
+            cin >> input;
+            cout << "-----------------------------------------------------------------------------" << endl;
+
+            if (input.length() == 1 && isdigit(input[0])) {
+                r = input[0] - '0'; 
+                if (r >= 0 && r <= 6) {
+                    break;
+                }
+            }
+            cout << "INVALID INPUT! Please Enter Between (0 AND 6)" << endl;
+            cout << "-----------------------------------------------------------------------------" << endl;
+        }
+
+        if (scorer == 1) {
+            p_balls += 1;
+            if (p_balls % 6 == 0) {
+                c_overs1 += 0.5;  
+            } else {
+                c_overs1 += 0.1;
+            }
+        }
+
+        switch (r) {
+            case 0: break;
+            case 1: score += 1; break;
+            case 2: score += 2; break;
+            case 3: score += 3; break;
+            case 4: score += 4; break;
+            case 5: score += 6; break;
+            case 6:
+            	if(scorer==1){    
+            		wickets +=1;
+				}else if (isWideBall) {
+                    wickets += 1; 
+                } else if (!isNoBall) {
+                    wickets += 1; 
+                }
+                break;
+        }
+
+        run_rate = (p_balls == 0) ? 0.0 : (float)score / (p_balls / 6.0);
+
+        if (wickets == team1size - 1 || p_balls == balls) {
+            target = score + 1;
+            break;
+        }
+    }
+
+    htmlFile.close();
+}
+
+void second_inning() {
+	fstream htmlFile("Match_Summary.html"); 
+    if (!htmlFile) {
+        cout << "Error opening file !" << endl;
+    } 
+ 
+	p_balls1 = 0;	
+	c_overs = 0;	
+	score1 = 0;		
+	wickets1 = 0;
+	run_rate1= 0.0;
+	int scorer1, r1;
+	
+    
+    for (int j = 0; j != balls; j++) {
+        system("cls");
+
+        cout << "-----------------------------------------------------------------------------"<<endl;
+        cout << setw(45) << "2nd_INNING" << endl;
+        cout << "-----------------------------------------------------------------------------"<<endl;
+        cout << "Score: " << score1 << "\tOvers: " << c_overs
+             << "\tWickets: " << wickets1 << "\tRunRate: " << run_rate1 << "\tTarget: " << target << endl;
+        cout << "-----------------------------------------------------------------------------"<<endl;
+
+        fstream webFile("Match_Summary.html"); 
+        webFile << "<!DOCTYPE html>\n<html>\n<head>\n";
+        webFile << "<title>Match Summary</title>\n";
+        webFile << "<style>\n";
+        webFile << "body { font-family: Arial, sans-serif; background-color: #f4f4f9; text-align: center; }\n";
+        webFile << "h1 { color: #000; }\n";
+        webFile << "table { margin: auto; border-collapse: collapse; width: 60%; }\n";
+        webFile << "th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }\n";
+        webFile << "th { background-color: #4CAF50; color: white; }\n";
+        webFile << ".winner { font-size: 28px; color: white; background: linear-gradient(to right, #ff7e5f, #feb47b); "<< "padding: 15px; margin-top: 20px; display: block; font-weight: bold; border-radius: 10px; }\n";
+       // webFile << ".emoji { font-size: 30px; margin-right: 10px; }\n";
+        webFile << "</style>\n</head>\n<body>\n";
+        webFile << "<h1>Second Inning Live Updates</h1>\n";
+        webFile << "<table>\n";
+        webFile << "<tr><th>Score</th><th>Overs</th><th>Wickets</th><th>Run Rate</th><th>Target</th></tr>\n";
+        webFile << "<tr>\n";
+        webFile << "<td>" << score1 << "</td><td>" << fixed << setprecision(1) << c_overs 
+                       << "</td><td>" << wickets1 << "</td><td>" << fixed << setprecision(2) 
+                       << run_rate1 << "</td><td>" << target << "</td>\n";
+        webFile << "</tr>\n";
+        webFile << "</table>\n";
+
+
+        if (score1 >= target) {
+        	webFile << "<div class='winner'>"<< team2Name << " HAS DONE IT! THEY HAVE WON THE GAME!  </div>\n";
+            webFile.close();
+            system("cls");
+            cout<<endl<<endl;
+            cout << "--------------------------------------------------------------------------------------------------------------------------" << endl;
+            cout <<"\t\t\t\t"<< team2Name << " HAS DONE IT! THEY HAVE WON THE GAME! " << endl; 
+            cout << "--------------------------------------------------------------------------------------------------------------------------" << endl;
+            cout<<endl<<endl;
+            break;
+        }
+        if (wickets1 == team1size - 1 || p_balls1 == balls ) {
+        	webFile << "<div class='winner'>"<< team1Name << " HAS DONE IT! THEY HAVE WON THE GAME! </div>\n";
+            webFile.close();
+            system("cls");
+            cout<<endl<<endl;
+            cout << "--------------------------------------------------------------------------------------------------------------------------" << endl;
+            cout <<"\t\t\t\t VICTORY FOR TEAM "<< team1Name << "! THEY HAVE BOWLED OUT " << team2Name << " TO SECURE THE MATCH!" << endl;
+            cout << "--------------------------------------------------------------------------------------------------------------------------" << endl;
+            cout<<endl<<endl;
+            break;
+        }
+        
+        webFile << "</body>\n</html>";
+        webFile.close();
+
+        int scorer1 = 0;
+        while (true) {
+            string input;
+            cout<<endl;
+            cout << "Last Ball: " << endl;
+            cout << "1..) Normal Delivery!" << endl;
+            cout << "2..) No ball/Wide!" << endl<<endl;
+            cout << "-----------------------------------------------------------------------------" << endl;
+            cout << "Please Choose (1 OR 2): ";
+            cin >> input;
+            cin.ignore();
+
+            if (input.length() == 1 && isdigit(input[0])) {
+                scorer1 = input[0] - '0';
+                if (scorer1 == 1 || scorer1 == 2) {
+                    break;
+                }
+            }
+            cout << "-----------------------------------------------------------------------------" << endl;
+            cout << "INVALID INPUT! Please Enter (1 OR 2)." << endl;
+            cout << "-----------------------------------------------------------------------------" << endl;
+        }
+		
+        bool isNoBall = false;
+        bool isWideBall = false;
+        if (scorer1 == 2) {
+            string extraRunType;
+            bool validInput = false;
+
+            while (!validInput) {
+                cout << "Enter W for Wide or N for No-ball: ";
+                cin >> extraRunType;
+                cout << "-----------------------------------------------------------------------------" << endl;
+
+                if (extraRunType.length() == 1) {
+                    char inputChar = tolower(extraRunType[0]);
+                    if (inputChar == 'w') {
+                        isWideBall = true;
+                        score += 1; 
+                        validInput = true;
+                    } else if (inputChar == 'n') {
+                        isNoBall = true;
+                        score += 1;
+                        validInput = true;
+                    } else {
+                        cout << "INVALID INPUT! Please Enter (W or N)" << endl;
+                        cout << "-----------------------------------------------------------------------------" << endl;
+                    }
+                } else {
+                    cout << "INVALID INPUT! Please Enter a Single Character (W or N)." << endl;
+                }
+            }
+        }
+
+		int r1 = 0;
+        while (true) {
+            string input;
+            cout << "-----------------------------------------------------------------------------" << endl;
+            cout<<endl;
+            cout << "Enter 0 for: DOT" << endl;
+            cout << "Enter 1 for: SINGLE" << endl;
+            cout << "Enter 2 for: DOUBLE" << endl;
+            cout << "Enter 3 for: TRIPLE" << endl;
+            cout << "Enter 4 for: FOUR" << endl;
+            cout << "Enter 5 for: SIX" << endl;
+            cout << "Enter 6 for: WICKET" << endl<<endl;
+            cout << "-----------------------------------------------------------------------------" << endl;
+            cout << "Enter a run for this ball: ";
+            cin >> input;
+
+            if (input.length() == 1 && isdigit(input[0])) {
+                r1 = input[0] - '0';
+                if (r1 >= 0 && r1 <= 6) {
+                    break;
+                }
+            }
+            cout << "INVALID INPUT! Please Enter Between (0 AND 6)" << endl;
+            cout << "-----------------------------------------------------------------------------" << endl;
+        }
+
+        if (scorer1 == 1) { 
+            p_balls1 += 1;
+            if (p_balls1 % 6 == 0) {
+                c_overs += 0.5;
+            } else {
+                c_overs += 0.1;
+            }
+        }
+
+        switch (r1) {
+            case 0: break;
+            case 1: score1 += 1; break;
+            case 2: score1 += 2; break;
+            case 3: score1 += 3; break;
+            case 4: score1 += 4; break;
+            case 5: score1 += 6; break;
+            case 6:
+            	if(scorer1==1){
+            		wickets1 +=1;
+				}else if (isWideBall) {
+                    wickets1 += 1; 
+                } else if (!isNoBall) {
+                    wickets1 += 1; 
+                }
+                break;
+        }
+        
+        run_rate1 = (p_balls1 == 0) ? 0.0 : (float)score1 / (p_balls1 / 6.0);
+    cout << "Second inning complete!" << endl;
+	}
+}
+
+void matchSummary(){
+    cout <<endl<<endl;
+    cout << setw(100) << "+===============================================================+" << endl;
+    cout<< setw(37) <<" | " << setw(45) << " M A T C H    S U M M A R Y "<< setw(18) << " |" << endl;
+    cout << setw(100) <<"+===============================================================+" << endl;
+    cout << setw(37) <<" | " << setw(37) << " FIRST INNING "<< setw(26) << " |" << endl;
+    cout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    cout << setw(37) <<"   " << right << setw(10) << "Score " << setw(20) << " |" << setw(20) << right << score <<endl;
+    cout <<setw(100) << "------------------------------+---------------------------------" << endl;
+    cout << setw(37) <<"   " << right << setw(10) << "Overs " << setw(20) << " |" << setw(20) << right << c_overs1 <<endl;
+   	cout <<setw(100) << "-------------------------------+---------------------------------" << endl;
+    cout << setw(37) <<"   " << right << setw(12) << "Wickets " << setw(18) << " |" << setw(20) << right << wickets <<endl;
+    cout <<setw(100) << "-------------------------------+---------------------------------" << endl;
+    cout << setw(37) <<"   " << right << setw(13) << "Run Rate " << setw(17) << " |" << setw(20) << right << fixed << setprecision(1) << run_rate <<endl;
+    cout <<setw(100) << "-------------------------------+---------------------------------" << endl;
+    cout << setw(37) <<"   " << right << setw(11) << "Target " << setw(19) << " |" << setw(20) << right << target <<endl;
+    cout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+	
+    cout << setw(37) <<" | " << setw(37) << " SECOND INNING "<< setw(26) << " |" << endl;
+    cout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    cout << setw(37) <<"   " << right << setw(10) << "Score " << setw(20) << " |" << setw(20) << right << score1 <<endl;
+    cout <<setw(100) << "-------------------------------+---------------------------------" << endl;
+    cout << setw(37) <<"   " << right << setw(10) << "Overs " << setw(20) << " |" << setw(20) << right << c_overs <<endl;
+    cout <<setw(100) << "-------------------------------+---------------------------------" << endl;
+    cout << setw(37) <<"   " << right << setw(12) << "Wickets " << setw(18) << " |" << setw(20) << right << wickets1 <<endl;
+    cout <<setw(100) << "-------------------------------+---------------------------------" << endl;
+    cout << setw(37) <<"   " << right << setw(13) << "Run Rate " << setw(17) << " |" << setw(20) << right << fixed << setprecision(1) << run_rate1 <<endl;
+    cout <<setw(100) << "================================+================================" << endl;
+
+    if (score1 >= target) {
+        cout << setw(37) <<"   " << right << setw(12) << "RESULT: " << setw(18) << " |" << setw(8) << team2Name << " WINS THE MATCH BY" << score1 - target<< " RUNS!"<<endl;
+        cout << setw(100) << "=================================================================" << endl;
+    } else {
+       cout << setw(37) <<"   " << right << setw(12) << "RESULT: " << setw(18) << " |" << setw(8) << team1Name << " WINS THE MATCH BY" << target - score1<< " RUNS!"<<endl;
+       cout << setw(100) << "=================================================================" << endl;
+    }
+
+    ofstream fout("match_summary.txt");
+    if (!fout) {
+        cout << "Error opening file !" << endl;
+    }
+
+	fout <<endl<<endl;
+    fout << setw(100) <<"+===============================================================+" << endl;
+    fout<< setw(37) <<"   " << setw(45) << " M A T C H    S U M M A R Y "<< setw(18) << " |" << endl;
+    fout << setw(100) <<"+===============================================================+" << endl;
+    fout << setw(37) <<"   " << setw(37) << " FIRST INNING "<< setw(26) << " |" << endl;
+    fout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    fout << setw(37) <<"   " << right << setw(10) << "Score " << setw(20) << " |" << setw(20) << right << score <<endl;
+    fout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    fout << setw(37) <<"   " << right << setw(10) << "Overs " << setw(20) << " |" << setw(20) << right << c_overs1 <<endl;
+   	fout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    fout << setw(37) <<"   " << right << setw(12) << "Wickets " << setw(18) << " |" << setw(20) << right << wickets <<endl;
+    fout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    fout << setw(37) <<"   " << right << setw(13) << "Run Rate " << setw(17) << " |" << setw(20) << right << fixed << setprecision(1) << run_rate  << setw(13) << " |" <<endl;
+    fout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    fout << setw(37) <<"   " << right << setw(11) << "Target " << setw(19) << " |" << setw(20) << right << target <<endl;
+    fout <<setw(100) << "+-----------------------------+--------------------------------+" << endl;
+	
+    fout << setw(37) <<" | " << setw(37) << " SECOND INNING "<< setw(26) << " |" << endl;
+    fout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    fout << setw(37) <<"   " << right << setw(10) << "Score " << setw(20) << " |" << setw(20) << right << score1 <<endl;
+    fout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    fout << setw(37) <<"   " << right << setw(10) << "Overs " << setw(20) << " |" << setw(20) << right << c_overs <<endl;
+    fout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    fout << setw(37) <<"   " << right << setw(12) << "Wickets " << setw(18) << " |" << setw(20) << right << wickets1 <<endl;
+    fout <<setw(100) << "+------------------------------+--------------------------------+" << endl;
+    fout << setw(37) <<"   " << right << setw(13) << "Run Rate " << setw(17) << " |" << setw(20) << right << fixed << setprecision(1) << run_rate1  << setw(13) << "  " <<endl;
+    fout <<setw(100) << "================================+================================" << endl;
+
+    if (score1 >= target) {
+        fout << setw(37) <<"   " << right << setw(12) << "RESULT: " << setw(18) << " |" << setw(8) << team2Name << " WINS THE MATCH BY" << score1 - target<< " RUNS!"<<endl;
+        fout << setw(100) << "=================================================================" << endl;
+    } else {
+        fout << setw(37) <<"   " << right << setw(12) << "RESULT: " << setw(18) << " |" << setw(8) << team1Name << " WINS THE MATCH BY" << target - score1<< " RUNS!"<<endl;
+        fout << setw(100) << "=================================================================" << endl;
+    }
+    
+    fout.close();
+}
