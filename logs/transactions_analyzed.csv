@@ -1,0 +1,3 @@
+timestamp,amount,merchant,location,device,ml_score,rule_score,final_score,risk_level,is_fraud,total_flags,flags
+2026-05-09 16:04:10,1000.0,Amazon,Karachi,Mobile,0.0046,0.0,0.0033,LOW,False,0,is_round_amount|is_known_safe_city|is_trusted_merchant
+2026-09-05 12:24:00,1000.0,Amazon,Karachi,Mobile,0.0046,0.0,0.0033,LOW,False,0,is_round_amount|is_known_safe_city|is_trusted_merchant

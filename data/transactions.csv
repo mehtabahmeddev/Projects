@@ -1,0 +1,12 @@
+user_id,amount,merchant,location,device,time_hour,prev_location,prev_device,avg_amount,is_fraud
+1,100,Amazon,Karachi,Mobile,10,Karachi,Mobile,120,0
+1,150,Amazon,Karachi,Mobile,12,Karachi,Mobile,120,0
+1,5000,Unknown,London,Web,2,Karachi,Mobile,120,1
+2,80,Foodpanda,Lahore,Mobile,14,Lahore,Mobile,90,0
+2,3000,Unknown,Dubai,Web,3,Lahore,Mobile,90,1
+3,200,Daraz,Karachi,Mobile,18,Karachi,Mobile,220,0
+3,7000,Unknown,NewYork,Web,1,Karachi,Mobile,220,1
+4,300,Amazon,Karachi,Mobile,11,Karachi,Mobile,310,0
+4,8000,Unknown,Dubai,Web,3,Karachi,Mobile,310,1
+5,50,Foodpanda,Lahore,Mobile,13,Lahore,Mobile,60,0
+5,5000,Unknown,London,Web,2,Lahore,Mobile,60,1
